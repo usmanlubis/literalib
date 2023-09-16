@@ -35,18 +35,39 @@
           />
         </div>
         <div class="action py-2">
-          <a v-if="!isCreating" href="#" class="add-button" @click="isCreating = !isCreating">Add Task</a>
+          <a v-if="!isCreating" href="#" class="add-button" @click="isCreating = !isCreating">Add Book</a>
           <div v-else class="add-card">
-            <div class="card mb-2">
-              <div class="card-body d-flex flex-column p-0">
-                <input type="text" class="form-control border-0 mb-2" placeholder="Title">
-                <textarea class="form-control border-0 small" placeholder="Description" rows="3"></textarea>
+            <form @submit.prevent="addBook">
+              <div class="mb-3">
+                <input id="bookTitle" v-model="form.title" type="text" name="bookTitle" class="form-control" placeholder="Book Title" required>
               </div>
-            </div>
-            <div class="button-wrapper d-flex">
-              <button class="btn btn-primary me-2">Save</button>
-              <button class="btn btn-outline-secondary" @click="isCreating = !isCreating">Cancel</button>
-            </div>
+              <div class="mb-3">
+                <textarea id="bookDescription" v-model="form.description" name="bookDescription" class="form-control" rows="3" placeholder="Description" required></textarea>
+              </div>
+              <p style="margin-bottom: 5px;">Category:</p>
+              <div class="form-check">
+                <input id="productivity" v-model="form.category" class="form-check-input" type="radio" name="bookCategory" value="Productivity" required>
+                <label class="form-check-label" for="productivity">
+                  Productivity
+                </label>
+              </div>
+              <div class="form-check">
+                <input id="self_help" v-model="form.category" class="form-check-input" type="radio" name="bookCategory" value="Self-help" required>
+                <label class="form-check-label" for="self_help">
+                  Self-help
+                </label>
+              </div>
+              <div class="form-check">
+                <input id="fiction" v-model="form.category" class="form-check-input" type="radio" name="bookCategory" value="Fiction" required>
+                <label class="form-check-label" for="fiction">
+                  Fiction
+                </label>
+              </div>
+              <div class="button-wrapper d-flex mt-3">
+                <button class="btn btn-primary me-2" type="submit">Add book</button>
+                <button class="btn btn-outline-secondary" @click="isCreating = !isCreating">Cancel</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -63,41 +84,16 @@
     },
     data() {
       return {
-        tasks: [
-          {
-            title: 'Eat That Frog',
-            description: 'Ini Deskripsi',
-            isDone: false,
-            category: 'Productivity'
-          },
-          {
-            title: 'Meditations',
-            description: 'ini deskripsi 2',
-            isDone: false,
-            category: 'Self-help'
-          },
-          {
-            title: 'Harry Potter',
-            description: ' ini deskripsi 3',
-            isDone: false,
-            category: 'Fiction'
-          },
-          {
-            title: 'The Alchemist',
-            description: ' ini deskripsi 4',
-            isDone: false,
-            category: 'Fiction'
-          },
-          {
-            title: 'Atomic Habits',
-            description: ' ini deskripsi 5',
-            isDone: false,
-            category: 'Self-help'
-          }
-        ],
+        tasks: [],
         isCreating: false,
         isGrid: false,
         category: 'All Categories',
+        form: {
+          title: '',
+          description: '',
+          isDone: false,
+          category: ''
+        }
       }
     },
     computed: {
@@ -108,6 +104,18 @@
           return this.tasks.filter((item) => {
             return item.category === this.category;
             });
+        }
+      }
+    },
+    methods: {
+      addBook() {
+        this.tasks.push(this.form);
+        this.isCreating = false;
+        this.form = {
+          title: '',
+          description: '',
+          isDone: false,
+          category: ''
         }
       }
     }
