@@ -26,11 +26,11 @@
             </div>
           </div>
         </div>
-        <div class="list-task row">
+        <div class="list-book row">
           <CardItem
-            v-for="(task, index) in filteredBooks"
+            v-for="(book, index) in filteredBooks"
             :key="index"
-            :task="task"
+            :book="book"
             :is-grid="isGrid"
           />
         </div>
@@ -84,7 +84,7 @@
     },
     data() {
       return {
-        tasks: [],
+        books: [],
         isCreating: false,
         isGrid: false,
         category: 'All Categories',
@@ -99,9 +99,9 @@
     computed: {
       filteredBooks() {
         if(this.category === 'All Categories'){
-          return this.tasks;
+          return this.books;
         } else {
-          return this.tasks.filter((item) => {
+          return this.books.filter((item) => {
             return item.category === this.category;
             });
         }
@@ -109,7 +109,7 @@
     },
     methods: {
       addBook() {
-        this.tasks.push(this.form);
+        this.books.push(this.form);
         this.isCreating = false;
         this.form = {
           title: '',
